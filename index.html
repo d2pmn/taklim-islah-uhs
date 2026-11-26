@@ -184,7 +184,7 @@
         return;
       }
       grid.innerHTML = list.map((item) => `
-        <a href="artikel.html?slug=${encodeURIComponent(item.slug)}" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-500 transition flex flex-col justify-between group">
+        <a href="/${encodeURIComponent(item.slug)}" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-500 transition flex flex-col justify-between group">
           <div>
             <div class="aspect-video bg-slate-100 overflow-hidden relative">
               <img src="${item.thumbnail || 'https://placehold.co/600x400/0f172a/10b981?text=Taklim+Islah+UHS'}" alt="${item.title}"
