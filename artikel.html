@@ -98,6 +98,12 @@
     const GITHUB_REPO = "d2pmn/taklim-islah-uhs";
     const GITHUB_BRANCH = "main";
 
+    const buatSlug = (teks) => (teks || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+
     function parseMarkdownFile(rawText) {
       const match = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
       if (!match) return { meta: {}, body: rawText };
@@ -115,45 +121,58 @@
     }
 
     async function muatDetailArtikel() {
-      const params = new URLSearchParams(window.location.search);
-      // Ambil slug dari URL path (/makna-intisab) atau fallback ke ?slug=
-      const pathSlug = window.location.pathname.replace(/^\/+|\/+$/g, '').replace(/\.html$/, '');
-      const slug = params.get('slug') || (pathSlug !== 'artikel' ? pathSlug : '');
+      const pathSlug = decodeURIComponent(window.location.pathname.replace(/^\/+|\/+$/g, '').replace(/\.html$/, ''));
       const loadingEl = document.getElementById('loading-state');
 
-      if (!slug) {
+      if (!pathSlug || pathSlug === 'artikel') {
         loadingEl.innerHTML = `Artikel tidak ditemukan. <a href="/index.html" class="text-emerald-700 underline">Kembali ke beranda</a>.`;
         return;
       }
 
       try {
-        const rawUrl = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/content/artikel/${encodeURIComponent(slug)}.md`;
-        const res = await fetch(rawUrl);
-        if (!res.ok) throw new Error("Artikel tidak ditemukan");
+        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/content/artikel?ref=${GITHUB_BRANCH}`;
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Gagal mengambil daftar artikel");
+        const files = await res.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
 
-        const rawText = await res.text();
-        const parsed = parseMarkdownFile(rawText);
+        let artikelKetemu = null;
 
-        document.title = `${parsed.meta.title || 'Artikel'} - Taklim Islah UHS`;
-        document.getElementById('art-tanggal').textContent = parsed.meta.date || '-';
-        document.getElementById('art-judul').textContent = parsed.meta.title || 'Tanpa Judul';
-        document.getElementById('art-pemateri').textContent = `Pemateri: ${parsed.meta.pemateri || '-'}`;
-        document.getElementById('art-isi').innerHTML = marked.parse(parsed.body);
+        for (const file of mdFiles) {
+          const rawRes = await fetch(file.download_url);
+          const rawText = await rawRes.text();
+          const parsed = parseMarkdownFile(rawText);
+          const slugJudul = buatSlug(parsed.meta.title);
+          const slugFile = file.name.replace(/\.md$/, '');
 
-        if (parsed.meta.thumbnail && parsed.meta.thumbnail.trim() !== "") {
-          document.getElementById('art-foto').src = parsed.meta.thumbnail;
+          if (slugJudul === pathSlug || slugFile === pathSlug) {
+            artikelKetemu = parsed;
+            break;
+          }
+        }
+
+        if (!artikelKetemu) throw new Error("Artikel tidak ditemukan");
+
+        document.title = `${artikelKetemu.meta.title || 'Artikel'} - Taklim Islah UHS`;
+        document.getElementById('art-tanggal').textContent = artikelKetemu.meta.date || '-';
+        document.getElementById('art-judul').textContent = artikelKetemu.meta.title || 'Tanpa Judul';
+        document.getElementById('art-pemateri').textContent = `Pemateri: ${artikelKetemu.meta.pemateri || '-'}`;
+        document.getElementById('art-isi').innerHTML = marked.parse(artikelKetemu.body);
+
+        if (artikelKetemu.meta.thumbnail && artikelKetemu.meta.thumbnail.trim() !== "") {
+          document.getElementById('art-foto').src = artikelKetemu.meta.thumbnail;
           document.getElementById('wadah-foto').classList.remove('hidden');
         }
 
-        if (parsed.meta.materi_url && parsed.meta.materi_url.trim() !== "") {
-          document.getElementById('art-link-materi').href = parsed.meta.materi_url;
+        if (artikelKetemu.meta.materi_url && artikelKetemu.meta.materi_url.trim() !== "") {
+          document.getElementById('art-link-materi').href = artikelKetemu.meta.materi_url;
           document.getElementById('wadah-materi').classList.remove('hidden');
         }
 
         loadingEl.classList.add('hidden');
         document.getElementById('konten-artikel').classList.remove('hidden');
       } catch (err) {
-        loadingEl.innerHTML = `Gagal memuat artikel atau halaman tidak ditemukan. <a href="index.html" class="text-emerald-700 underline">Kembali ke beranda</a>.`;
+        loadingEl.innerHTML = `Artikel tidak ditemukan. <a href="/index.html" class="text-emerald-700 underline">Kembali ke beranda</a>.`;
       }
     }
 
