@@ -28,7 +28,7 @@
         </div>
         <div>
           <span class="font-bold text-slate-900 block leading-tight">Taklim Islah</span>
-          <span class="text-xs text-emerald-700 font-medium">Universitas Halim Sanusi PUI</span>
+          <span class="text-xs text-emerald-700 font-medium">Universitas Halim Sanusi</span>
         </div>
       </div>
       <div class="flex items-center gap-5 text-sm font-medium text-slate-600">
@@ -142,7 +142,17 @@
     const GITHUB_BRANCH = "main";
     let dataArtikelGlobal = [];
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
-
+    const formatTanggal = (tgl) => {
+      if (!tgl) return '-';
+      const d = new Date(tgl);
+      if (isNaN(d.getTime())) return tgl;
+      return d.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Asia/Jakarta'
+      });
+    };
     function parseMarkdownFile(rawText) {
       const match = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
       if (!match) return { meta: {}, body: rawText };
@@ -237,7 +247,7 @@
           totalKeluar += keluar;
           return `
             <tr class="hover:bg-slate-50 transition">
-              <td class="py-3.5 px-4 whitespace-nowrap text-slate-600">${item.Tanggal || '-'}</td>
+              <td class="py-3.5 px-4 whitespace-nowrap text-slate-600">${formatTanggal(item.Tanggal)}</td>
               <td class="py-3.5 px-4 font-medium text-slate-800">${item.Keterangan || '-'}</td>
               <td class="py-3.5 px-4 text-right font-semibold text-emerald-600">${masuk > 0 ? '+' + formatRupiah(masuk) : '-'}</td>
               <td class="py-3.5 px-4 text-right font-semibold text-rose-600">${keluar > 0 ? '-' + formatRupiah(keluar) : '-'}</td>
