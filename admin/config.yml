@@ -10,7 +10,7 @@ collections:
     label: "Artikel Pertemuan Taklim"
     folder: "content/artikel"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
       - { label: "Judul Kajian", name: "title", widget: "string" }
       - { label: "Tanggal Pertemuan", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMM YYYY", time_format: false }
