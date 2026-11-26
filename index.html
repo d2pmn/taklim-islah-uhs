@@ -130,6 +130,13 @@
         timeZone: 'Asia/Jakarta'
       });
     };
+    
+    const buatSlug = (teks) => (teks || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+    
     function parseMarkdownFile(rawText) {
       const match = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
       if (!match) return { meta: {}, body: rawText };
@@ -160,7 +167,7 @@
           const rawText = await rawRes.text();
           const parsed = parseMarkdownFile(rawText);
           return {
-            slug: file.name.replace(/\.md$/, ''),
+            slug: buatSlug(parsed.meta.title) || file.name.replace(/\.md$/, ''),
             title: parsed.meta.title || file.name,
             date: parsed.meta.date || '',
             pemateri: parsed.meta.pemateri || '-',
