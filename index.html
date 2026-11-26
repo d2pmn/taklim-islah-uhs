@@ -273,6 +273,7 @@
       const labels = dataUrut.map(item => formatTanggal(item.Tanggal));
       const dataMasuk = dataUrut.map(item => Number(item.Pemasukan_Infaq) || 0);
       const dataKeluar = dataUrut.map(item => Number(item.Pengeluaran) || 0);
+      const dataSaldo = dataUrut.map(item => Number(item.Sisa_Saldo) || 0);
 
       if (chartInfaqInstance) {
         chartInfaqInstance.destroy();
@@ -283,6 +284,18 @@
         data: {
           labels: labels,
           datasets: [
+            {
+              label: 'Sisa Saldo Kas',
+              data: dataSaldo,
+              borderColor: '#1e3a8a',
+              backgroundColor: 'rgba(30, 58, 138, 0.12)',
+              borderWidth: 2.5,
+              fill: true,
+              tension: 0.35,
+              pointBackgroundColor: '#1e3a8a',
+              pointRadius: 4,
+              pointHoverRadius: 6
+            },
             {
               label: 'Pemasukan Infaq',
               data: dataMasuk,
