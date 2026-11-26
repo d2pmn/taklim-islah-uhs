@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "artikel"
+    label: "Artikel Pertemuan Taklim"
+    folder: "content/artikel"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Judul Kajian", name: "title", widget: "string" }
+      - { label: "Tanggal Pertemuan", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMM YYYY", time_format: false }
+      - { label: "Pemateri / Narasumber", name: "pemateri", widget: "string" }
+      - { label: "Foto Dokumentasi Utama", name: "thumbnail", widget: "image", required: false }
+      - { label: "Ringkasan Singkat", name: "summary", widget: "text" }
+      - { label: "Link File Materi (PDF/PPT Opsional)", name: "materi_url", widget: "string", required: false }
+      - { label: "Isi Artikel & Notulensi", name: "body", widget: "markdown" }

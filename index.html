@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taklim Islah - Universitas Halim Sanusi PUI Bandung</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .prose-artikel p { margin-bottom: 1rem; line-height: 1.75; }
+    .prose-artikel h2, .prose-artikel h3 { font-weight: 700; color: #0f172a; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .prose-artikel h3 { font-size: 1.125rem; }
+    .prose-artikel ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+    .prose-artikel ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+    .prose-artikel blockquote { border-left: 4px solid #059669; padding-left: 1rem; font-style: italic; color: #475569; margin: 1rem 0; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-600 to-blue-900 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          UHS
+        </div>
+        <div>
+          <span class="font-bold text-slate-900 block leading-tight">Taklim Islah</span>
+          <span class="text-xs text-emerald-700 font-medium">Universitas Halim Sanusi PUI</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-5 text-sm font-medium text-slate-600">
+        <a href="#artikel" class="hover:text-emerald-600 transition">Artikel Kajian</a>
+        <a href="#infaq" class="hover:text-emerald-600 transition">Laporan Infaq</a>
+        <a href="/admin/" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition">
+          Login CMS
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-br from-blue-950 via-blue-900 to-emerald-900 text-white py-14 px-4">
+    <div class="max-w-6xl mx-auto">
+      <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-semibold mb-4">
+        Kajian Rutin Jumat • Sivitas Akademika UHS Bandung
+      </span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight max-w-3xl leading-tight">
+        Jurnal Kajian, Dokumentasi & Transparansi Infaq Taklim Islah
+      </h1>
+      <p class="mt-4 text-blue-100 max-w-2xl text-sm sm:text-base leading-relaxed">
+        Arsip artikel mingguan pembinaan keislaman dan nilai-nilai perjuangan Persatuan Ummat Islam (PUI) di lingkungan Universitas Halim Sanusi.
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-20">
+    <section id="artikel" class="scroll-mt-24">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Artikel & Dokumentasi Pertemuan</h2>
+          <p class="text-sm text-slate-500 mt-1">Liputan kegiatan dan intisari materi kajian setiap Jumat.</p>
+        </div>
+        <input type="text" id="cari-artikel" placeholder="Cari judul kajian atau pemateri..." 
+          class="w-full sm:w-72 px-4 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
+      </div>
+      <div id="grid-artikel" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full py-12 text-center text-slate-400">Memuat artikel dari repositori...</div>
+      </div>
+    </section>
+
+    <section id="infaq" class="scroll-mt-24">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-900">Transparansi Dana Infaq</h2>
+        <p class="text-sm text-slate-500 mt-1">Rekapitulasi pemasukan dan penyaluran infaq mingguan Taklim Islah.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Saldo Kas Infaq Saat Ini</p>
+          <p id="saldo-total" class="text-2xl font-bold text-emerald-700 mt-2">Memuat...</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Pemasukan</p>
+          <p id="total-masuk" class="text-2xl font-bold text-blue-900 mt-2">Memuat...</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Penyaluran</p>
+          <p id="total-keluar" class="text-2xl font-bold text-slate-700 mt-2">Memuat...</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-slate-100 border-b border-slate-200 text-slate-600 font-semibold">
+                <th class="py-3.5 px-4">Tanggal</th>
+                <th class="py-3.5 px-4">Keterangan</th>
+                <th class="py-3.5 px-4 text-right">Pemasukan</th>
+                <th class="py-3.5 px-4 text-right">Pengeluaran</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-infaq" class="divide-y divide-slate-100">
+              <tr><td colspan="4" class="py-8 text-center text-slate-400">Mengambil data infaq...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal-artikel" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 sm:px-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <span id="modal-tanggal" class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-md"></span>
+        <button onclick="tutupModal()" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-lg">&times;</button>
+      </div>
+      <div class="overflow-y-auto p-6 sm:p-8 space-y-5">
+        <h2 id="modal-judul" class="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug"></h2>
+        <p id="modal-pemateri" class="text-sm font-medium text-slate-500"></p>
+        <img id="modal-foto" src="" alt="Dokumentasi Kajian" class="hidden w-full max-h-80 object-cover rounded-xl border border-slate-200">
+        <div id="modal-isi" class="prose-artikel text-slate-700 text-base pt-2"></div>
+      </div>
+      <div class="p-4 sm:px-6 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+        <a id="modal-link" href="#" target="_blank" class="hidden text-sm font-semibold text-blue-800 hover:underline">
+          Unduh Slide / Modul Materi &rarr;
+        </a>
+        <button onclick="tutupModal()" class="ml-auto px-5 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">
+          Tutup Artikel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 px-4 text-center text-xs mt-12">
+    <p class="font-semibold text-slate-200">Taklim Islah • Universitas Halim Sanusi (UHS) PUI Bandung</p>
+    <p class="mt-1">Portal Jurnal Kajian & Transparansi Infaq</p>
+  </footer>
+
+  <script>
+    // GANTI DUA BARIS DI BAWAH INI:
+    const GITHUB_REPO = "d2pmn/taklim-islah-uhs";
+    const INFAQ_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaJ0oSWunzly2vQE0Ir1T_nWUXRtYFh_wVDbGCVEv4I6Ok9WxNFbd34LkQo9eVE8z_/exec";
+
+    const GITHUB_BRANCH = "main";
+    let dataArtikelGlobal = [];
+    const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+
+    function parseMarkdownFile(rawText) {
+      const match = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+      if (!match) return { meta: {}, body: rawText };
+      const yamlLines = match[1].split('\n');
+      const meta = {};
+      yamlLines.forEach(line => {
+        const idx = line.indexOf(':');
+        if (idx !== -1) {
+          const key = line.slice(0, idx).trim();
+          let val = line.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+          meta[key] = val;
+        }
+      });
+      return { meta, body: match[2].trim() };
+    }
+
+    async function muatArtikelDariGitHub() {
+      const grid = document.getElementById('grid-artikel');
+      try {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/content/artikel?ref=${GITHUB_BRANCH}`;
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Gagal mengambil daftar artikel");
+        const files = await res.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).reverse();
+
+        const artikelPromises = mdFiles.map(async (file) => {
+          const rawRes = await fetch(file.download_url);
+          const rawText = await rawRes.text();
+          const parsed = parseMarkdownFile(rawText);
+          return {
+            title: parsed.meta.title || file.name,
+            date: parsed.meta.date || '',
+            pemateri: parsed.meta.pemateri || '-',
+            thumbnail: parsed.meta.thumbnail || '',
+            summary: parsed.meta.summary || '',
+            materi_url: parsed.meta.materi_url || '',
+            bodyHtml: marked.parse(parsed.body)
+          };
+        });
+
+        dataArtikelGlobal = await Promise.all(artikelPromises);
+        renderArtikel(dataArtikelGlobal);
+      } catch (err) {
+        grid.innerHTML = `<div class="col-span-full py-10 text-center text-slate-400">Belum ada artikel atau repositori belum terhubung.</div>`;
+      }
+    }
+
+    function renderArtikel(list) {
+      const grid = document.getElementById('grid-artikel');
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-10 text-center text-slate-400">Artikel tidak ditemukan.</div>`;
+        return;
+      }
+      grid.innerHTML = list.map((item, idx) => `
+        <article onclick="bukaModal(${idx})" class="cursor-pointer bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-500 transition flex flex-col justify-between group">
+          <div>
+            <div class="aspect-video bg-slate-100 overflow-hidden relative">
+              <img src="${item.thumbnail || 'https://placehold.co/600x400/0f172a/10b981?text=Taklim+Islah+UHS'}" alt="${item.title}"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                onerror="this.src='https://placehold.co/600x400/0f172a/10b981?text=Taklim+Islah+UHS'">
+              <span class="absolute top-3 left-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-md text-xs font-bold text-emerald-800 shadow-sm">
+                ${item.date}
+              </span>
+            </div>
+            <div class="p-5">
+              <p class="text-xs font-medium text-blue-800 mb-1.5">Pemateri: ${item.pemateri}</p>
+              <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition line-clamp-2 leading-snug">${item.title}</h3>
+              <p class="text-sm text-slate-600 mt-2.5 line-clamp-3 leading-relaxed">${item.summary}</p>
+            </div>
+          </div>
+          <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-100 text-xs font-bold text-emerald-700 flex items-center justify-between">
+            <span>Baca Artikel Lengkap</span><span>&rarr;</span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    async function muatInfaqDariSheets() {
+      const tbody = document.getElementById('tabel-infaq');
+      try {
+        const res = await fetch(INFAQ_SCRIPT_URL);
+        const list = await res.json();
+        let totalMasuk = 0, totalKeluar = 0;
+        if (!list || list.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400">Belum ada data infaq.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = list.map(item => {
+          const masuk = Number(item.Pemasukan_Infaq) || 0;
+          const keluar = Number(item.Pengeluaran) || 0;
+          totalMasuk += masuk;
+          totalKeluar += keluar;
+          return `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-3.5 px-4 whitespace-nowrap text-slate-600">${item.Tanggal || '-'}</td>
+              <td class="py-3.5 px-4 font-medium text-slate-800">${item.Keterangan || '-'}</td>
+              <td class="py-3.5 px-4 text-right font-semibold text-emerald-600">${masuk > 0 ? '+' + formatRupiah(masuk) : '-'}</td>
+              <td class="py-3.5 px-4 text-right font-semibold text-rose-600">${keluar > 0 ? '-' + formatRupiah(keluar) : '-'}</td>
+            </tr>
+          `;
+        }).join('');
+        document.getElementById('total-masuk').textContent = formatRupiah(totalMasuk);
+        document.getElementById('total-keluar').textContent = formatRupiah(totalKeluar);
+        document.getElementById('saldo-total').textContent = formatRupiah(totalMasuk - totalKeluar);
+      } catch (err) { console.error(err); }
+    }
+
+    function bukaModal(index) {
+      const item = dataArtikelGlobal[index];
+      if (!item) return;
+      document.getElementById('modal-tanggal').textContent = item.date || '-';
+      document.getElementById('modal-judul').textContent = item.title || '-';
+      document.getElementById('modal-pemateri').textContent = `Pemateri: ${item.pemateri || '-'}`;
+      document.getElementById('modal-isi').innerHTML = item.bodyHtml || '-';
+      const img = document.getElementById('modal-foto');
+      if (item.thumbnail && item.thumbnail.trim() !== "") { img.src = item.thumbnail; img.classList.remove('hidden'); } else { img.classList.add('hidden'); }
+      const linkBtn = document.getElementById('modal-link');
+      if (item.materi_url && item.materi_url.trim() !== "") { linkBtn.href = item.materi_url; linkBtn.classList.remove('hidden'); } else { linkBtn.classList.add('hidden'); }
+      document.getElementById('modal-artikel').classList.remove('hidden');
+    }
+
+    function tutupModal() { document.getElementById('modal-artikel').classList.add('hidden'); }
+
+    document.getElementById('cari-artikel').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = dataArtikelGlobal.filter(item => 
+        (item.title || '').toLowerCase().includes(q) || (item.pemateri || '').toLowerCase().includes(q) || (item.summary || '').toLowerCase().includes(q)
+      );
+      renderArtikel(filtered);
+    });
+
+    // Redirect otomatis setelah klik link undangan email Netlify Identity
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+        }
+      });
+    }
+
+    muatArtikelDariGitHub();
+    muatInfaqDariSheets();
+  </script>
+</body>
+</html>
